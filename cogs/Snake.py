@@ -1,9 +1,18 @@
 import asyncio
+from enum import Enum
 
 import discord
 from discord.ext import commands
 
 
+class Emoji():
+    APPLE = '🍎'
+    BLACK = '⬛'
+    DOWN = '⬇️'
+    LEFT = '⬅️'
+    RIGHT = '➡️'
+    SNAKE = '🐍'
+    UP = '⬆️'
 class Snake(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
