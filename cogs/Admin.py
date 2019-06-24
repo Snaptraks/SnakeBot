@@ -11,7 +11,7 @@ class Admin(commands.Cog):
     @commands.is_owner()
     async def stop(self, ctx):
         """Stops the bot quickly."""
-        self.bot.logout()
+        await self.bot.logout()
 
     @commands.command()
     @commands.is_owner()
