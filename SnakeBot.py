@@ -11,7 +11,7 @@ class MyBot(Bot):
 
     async def on_ready(self):
         invitation_link = (f'https://discordapp.com/oauth2/authorize?'
-            f'client_id={self.user.id}&scope=bot&permissions=68672')
+            f'client_id={self.user.id}&scope=bot&permissions=76864')
         print(invitation_link)
 
 if __name__ == '__main__':
