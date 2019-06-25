@@ -87,6 +87,7 @@ class Game():
 
             self.move(dx, dy)
 
+            # Detect collision with apple
             if (self.x, self.y) == self.apple:
                 print('moved over apple')
                 self.eat()
@@ -94,9 +95,12 @@ class Game():
                 self._spawn_apple()
 
             # Detect collision with itself
-            if len(self.body[0]) > 1:
-                for bx, by in zip(*self.body):
-                    pass
+            body = np.asarray(self.body).T
+            body = body[:-1].tolist()
+            head_in_body = [part == [self.x, self.y] for part in body]
+            if any(head_in_body):
+                await self.game_over('hit itself')
+                continue
 
             # Detect collision with border
             if (self.x < 0 or
@@ -138,7 +142,7 @@ class Game():
                 np.random.randint(self.size_x),
                 np.random.randint(self.size_y),
             )
-            apple_in_body = [row == list(apple) for row in body.tolist()]
+            apple_in_body = [part == list(apple) for part in body.tolist()]
             if not any(apple_in_body):
                 self.apple = apple
                 self._apple_eaten = False
