@@ -131,12 +131,14 @@ class Game():
         print(reason)
 
     def _spawn_apple(self):
+        body = np.asarray(self.body).T
         while True:
             apple = (
                 np.random.randint(self.size_x),
                 np.random.randint(self.size_y),
             )
-            if apple not in np.asarray(self.body).T:
+            apple_in_body = [row == list(apple) for row in body.tolist()]
+            if not any(apple_in_body):
                 self.apple = apple
                 self._apple_eaten = False
                 return
