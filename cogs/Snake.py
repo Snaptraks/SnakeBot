@@ -127,7 +127,8 @@ class Game():
 
     async def game_over(self, reason):
         self.is_over = True
-        await self.message_game.delete()
+        # await self.message_game.delete()
+        await self.message_game.clear_reactions()
         print(reason)
 
     def _spawn_apple(self):
