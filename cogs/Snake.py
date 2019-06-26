@@ -42,6 +42,36 @@ class Game():
         self._apple_eaten = True
 
         self.screen = np.full((size_x, size_y), Emoji.BLACK.value)
+
+        self.embed = discord.Embed(
+            title='A Game of Snake',
+            type='rich',
+            url='https://github.com/Snaptraks/SnakeBot',
+            color=0x77B255,
+        ).set_footer(
+            text='Coded for Discord Hack Week by Snaptraks#2606',
+        # ).set_author(
+        #     name='Snaptraks#2606',
+        #     url='https://github.com/Snaptraks',
+        ).add_field(
+            name='Personnal Best',
+            value=None,
+        ).add_field(
+            name='High Score',
+            value=None,
+        ).add_field(
+            # name=(
+            #     ':regional_indicator_s: '
+            #     ':regional_indicator_n: '
+            #     ':regional_indicator_a: '
+            #     ':regional_indicator_k: '
+            #     ':regional_indicator_e: '
+            # ),
+            name=f'Score: {self.score}',
+            value=self.display(),
+            inline=False,
+        )
+
         self.controls = (
             Emoji.LEFT.value,
             Emoji.UP.value,
@@ -52,7 +82,8 @@ class Game():
 
     async def play(self):
         # message_game = await self.ctx.send(self.display())  # starting screen
-        message_game = await self.ctx.send(embed=self.display())  # starting screen
+        # message_game = await self.ctx.send(embed=self.display())  # starting screen
+        message_game = await self.ctx.send(embed=self.embed)  # starting screen
         self.message_game = message_game
         for arrow in self.controls:
             await message_game.add_reaction(arrow)
@@ -114,7 +145,8 @@ class Game():
 
             # Update message with new game layout
             # await message_game.edit(content=self.display())
-            await message_game.edit(embed=self.display())
+            # await message_game.edit(embed=self.display())
+            await self.update_display()
 
     def move(self, dx, dy):
         self.x += dx
@@ -163,13 +195,18 @@ class Game():
         # Transpose (.T) the screen array to match horizontal-x vertical-y in
         # (x, y) order, unlike (i, j) for matrices
         str_screen = '\n'.join(''.join(line) for line in self.screen.T)
-        e = discord.Embed(
-            title='A Game of Snake',
-            description=str_screen,
-            color=0x77B255,
-            footer='Coded for Discord Hack Week by Snaptraks#2606',
+        return str_screen
+
+    async def update_display(self):
+        screen_field_index = 2
+        screen_field = self.embed.fields[screen_field_index]
+        self.embed.set_field_at(
+            index=screen_field_index,
+            name=f'Score: {self.score}',
+            value=self.display(),
+            inline=False,
         )
-        return e
+        await self.message_game.edit(embed=self.embed)
 
 
 class Snake(commands.Cog):
