@@ -51,7 +51,8 @@ class Game():
         )
 
     async def play(self):
-        message_game = await self.ctx.send(self.display())  # starting screen
+        # message_game = await self.ctx.send(self.display())  # starting screen
+        message_game = await self.ctx.send(embed=self.display())  # starting screen
         self.message_game = message_game
         for arrow in self.controls:
             await message_game.add_reaction(arrow)
@@ -112,7 +113,8 @@ class Game():
                 continue
 
             # Update message with new game layout
-            await message_game.edit(content=self.display())
+            # await message_game.edit(content=self.display())
+            await message_game.edit(embed=self.display())
 
     def move(self, dx, dy):
         self.x += dx
@@ -160,7 +162,14 @@ class Game():
         self.screen[tuple(self.body)] = Emoji.SNAKE.value
         # Transpose (.T) the screen array to match horizontal-x vertical-y in
         # (x, y) order, unlike (i, j) for matrices
-        return '\n'.join(''.join(line) for line in self.screen.T)
+        str_screen = '\n'.join(''.join(line) for line in self.screen.T)
+        e = discord.Embed(
+            title='A Game of Snake',
+            description=str_screen,
+            color=0x77B255,
+            footer='Coded for Discord Hack Week by Snaptraks#2606',
+        )
+        return e
 
 
 class Snake(commands.Cog):
