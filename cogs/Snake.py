@@ -231,6 +231,7 @@ class Snake(commands.Cog):
 
     @commands.command()
     async def emoji(self, ctx):
+        """Prints all the emojis (for debugging)."""
         await ctx.send(' '.join(emoji.value for emoji in Emoji))
 
 
