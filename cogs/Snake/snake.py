@@ -91,7 +91,7 @@ class Snake(commands.Cog):
         await ctx.send(embed=e)
 
 
-    @commands.command()
+    @commands.command(aliases=['highscores'])
     async def highscore(self, ctx, size_x: int = None, size_y: int = None):
         """Displays the top players and scores in a given size, or all of them.
         """
@@ -115,6 +115,7 @@ class Snake(commands.Cog):
 
         e = discord.Embed(
             title='A Game of Snake',
+            description='High Scores',
             type='rich',
             url='https://github.com/Snaptraks/SnakeBot',
             color=0x77B255,
