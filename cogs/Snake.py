@@ -303,6 +303,36 @@ class Snake(commands.Cog):
         print('Snake Game Over')
 
     @commands.command()
+    async def personnalbest(self, ctx):
+        str_best = []
+        for size in Score.high_scores.keys():
+            score = Score.high_scores[size][ctx.author.id]
+            str_best.append(f'{size[0]}x{size[1]}: {score}')
+
+        e = discord.Embed(
+            title='A Game of Snake',
+            type='rich',
+            url='https://github.com/Snaptraks/SnakeBot',
+            color=0x77B255,
+        ).set_footer(
+            text='Coded for Discord Hack Week by Snaptraks#2606',
+        ).add_field(
+            name='Personnal Best',
+            value='\n'.join(str_best),
+            inline=False,
+        )
+
+        await ctx.send(embed=e)
+
+    @commands.command()
+    async def highscore(self, ctx):
+        pass
+
+    @commands.command()
+    async def topplayers(self, ctx):
+        pass
+
+    @commands.command()
     async def emoji(self, ctx):
         """Prints all the emojis (for debugging)."""
         await ctx.send(' '.join(emoji.value for emoji in Emoji))
