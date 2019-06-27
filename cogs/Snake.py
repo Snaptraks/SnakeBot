@@ -306,11 +306,79 @@ class Snake(commands.Cog):
         await game.play()
 
     @commands.command()
-    async def personnalbest(self, ctx):
+    async def personnalbest(self, ctx, size_x: int = None, size_y: int = None):
+        """Displays your personnal best in a given size, or all of them."""
         str_best = []
-        for size in Score.high_scores.keys():
-            score = Score.high_scores[size][ctx.author.id]
-            str_best.append(f'{size[0]}x{size[1]}: {score}')
+        dict_best = {}
+        if size_x is None and size_y is None:
+            for size in Score.high_scores.keys():
+                score = Score.high_scores[size][ctx.author.id]
+                str_best.append(f'**{size[0]}x{size[1]}**: {score}')
+                dict_best[f'{size[0]}x{size[1]}'] = score
+        elif size_x is None or size_y is None:
+            await ctx.send('Use either both `size_x` and `size_y`, or none.')
+            return
+        else:
+            try:
+                score = Score.high_scores[(size_x, size_y)][ctx.author.id]
+                str_best.append(f'**{size_x}x{size_y}**: {score}')
+                dict_best[f'{size_x}x{size_y}'] = score
+            except KeyError as e:
+                pass
+
+        if len(str_best) == 0:
+            str_best = ['No high scores registered yet.']
+
+        e = discord.Embed(
+            title='A Game of Snake',
+            description='Personnal Best',
+            type='rich',
+            url='https://github.com/Snaptraks/SnakeBot',
+            color=0x77B255,
+        ).set_footer(
+            text='Coded for Discord Hack Week by Snaptraks#2606',
+        # ).add_field(
+        #     name='Personnal Best',
+        #     value='\n'.join(str_best),
+        #     inline=False,
+        )
+        if len(dict_best) != 0:
+            for s in dict_best:
+                e.add_field(
+                    name=s,
+                    value=dict_best[s],
+                )
+        else:
+            e.add_field(
+                name='No high scores registered yet.',
+                value='Start a game with `!play`.',
+            )
+
+        await ctx.send(embed=e)
+
+    @commands.command()
+    async def highscore(self, ctx, size_x: int = None, size_y: int = None):
+        """Displays highest score in a given size, or all of them."""
+        str_high = []
+        dict_high = {}
+        if size_x is None and size_y is None:
+            for size in Score.high_scores.keys():
+                score = max(Score.high_scores[size].values())
+                str_high.append(f'**{size[0]}x{size[1]}**: {score}')
+                dict_high[f'{size[0]}x{size[1]}'] = score
+        elif size_x is None or size_y is None:
+            await ctx.send('Use either both `size_x` and `size_y`, or none.')
+            return
+        else:
+            try:
+                score = max(Score.high_scores[(size_x, size_y)].values())
+                str_high.append(f'**{size_x}x{size_y}**: {score}')
+                dict_high[f'{size_x}x{size_y}'] = score
+            except KeyError as e:
+                pass
+
+        if len(str_high) == 0:
+            str_high = ['No high scores registered yet.']
 
         e = discord.Embed(
             title='A Game of Snake',
@@ -319,21 +387,72 @@ class Snake(commands.Cog):
             color=0x77B255,
         ).set_footer(
             text='Coded for Discord Hack Week by Snaptraks#2606',
-        ).add_field(
-            name='Personnal Best',
-            value='\n'.join(str_best),
-            inline=False,
+        # ).add_field(
+        #     name='Highest Scores',
+        #     value='\n'.join(str_high),
+        #     inline=False,
         )
+        if len(dict_high) != 0:
+            for s in dict_high:
+                e.add_field(
+                    name=s,
+                    value=dict_high[s],
+                )
+        else:
+            e.add_field(
+                name='No high scores registered yet.',
+                value='Start a game with `!play`.',
+            )
 
         await ctx.send(embed=e)
 
-    @commands.command()
-    async def highscore(self, ctx):
-        pass
 
     @commands.command()
-    async def topplayers(self, ctx):
-        pass
+    async def topplayers(self, ctx, size_x: int = None, size_y: int = None):
+        """Displays the top players in a given size, or all of them."""
+        dict_top = {}
+        if size_x is None and size_y is None:
+            for size in Score.high_scores.keys():
+                top_users = Score.get_top_users(size)
+                score = Score.get_top(size)
+                dict_top[f'{size[0]}x{size[1]} ({score})'] = \
+                    '\n'.join(self.bot.get_user(uid).display_name \
+                    for uid in top_users)
+        elif size_x is None or size_y is None:
+            await ctx.send('Use either both `size_x` and `size_y`, or none.')
+            return
+        else:
+            top_users = Score.get_top_users((size_x, size_y))
+            score = Score.get_top((size_x, size_y))
+            dict_top[f'{size_x}x{size_y} ({score})'] = \
+                '\n'.join(self.bot.get_user(uid).display_name \
+                for uid in top_users)
+
+        e = discord.Embed(
+            title='A Game of Snake',
+            type='rich',
+            url='https://github.com/Snaptraks/SnakeBot',
+            color=0x77B255,
+        ).set_footer(
+            text='Coded for Discord Hack Week by Snaptraks#2606',
+        # ).add_field(
+        #     name='Highest Scores',
+        #     value='\n'.join(str_high),
+        #     inline=False,
+        )
+        if len(dict_top) != 0:
+            for s in dict_top:
+                e.add_field(
+                    name=s,
+                    value=dict_top[s],
+                )
+        else:
+            e.add_field(
+                name='No high scores registered yet.',
+                value='Start a game with `!play`.',
+            )
+
+        await ctx.send(embed=e)
 
     @commands.command()
     async def emoji(self, ctx):
