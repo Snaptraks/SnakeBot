@@ -356,60 +356,11 @@ class Snake(commands.Cog):
 
         await ctx.send(embed=e)
 
+
     @commands.command()
     async def highscore(self, ctx, size_x: int = None, size_y: int = None):
-        """Displays highest score in a given size, or all of them."""
-        str_high = []
-        dict_high = {}
-        if size_x is None and size_y is None:
-            for size in Score.high_scores.keys():
-                score = max(Score.high_scores[size].values())
-                str_high.append(f'**{size[0]}x{size[1]}**: {score}')
-                dict_high[f'{size[0]}x{size[1]}'] = score
-        elif size_x is None or size_y is None:
-            await ctx.send('Use either both `size_x` and `size_y`, or none.')
-            return
-        else:
-            try:
-                score = max(Score.high_scores[(size_x, size_y)].values())
-                str_high.append(f'**{size_x}x{size_y}**: {score}')
-                dict_high[f'{size_x}x{size_y}'] = score
-            except KeyError as e:
-                pass
-
-        if len(str_high) == 0:
-            str_high = ['No high scores registered yet.']
-
-        e = discord.Embed(
-            title='A Game of Snake',
-            type='rich',
-            url='https://github.com/Snaptraks/SnakeBot',
-            color=0x77B255,
-        ).set_footer(
-            text='Coded for Discord Hack Week by Snaptraks#2606',
-        # ).add_field(
-        #     name='Highest Scores',
-        #     value='\n'.join(str_high),
-        #     inline=False,
-        )
-        if len(dict_high) != 0:
-            for s in dict_high:
-                e.add_field(
-                    name=s,
-                    value=dict_high[s],
-                )
-        else:
-            e.add_field(
-                name='No high scores registered yet.',
-                value='Start a game with `!play`.',
-            )
-
-        await ctx.send(embed=e)
-
-
-    @commands.command()
-    async def topplayers(self, ctx, size_x: int = None, size_y: int = None):
-        """Displays the top players in a given size, or all of them."""
+        """Displays the top players and scores in a given size, or all of them.
+        """
         dict_top = {}
         if size_x is None and size_y is None:
             for size in Score.high_scores.keys():
