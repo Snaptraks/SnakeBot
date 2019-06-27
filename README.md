@@ -8,3 +8,4 @@ Arguments in `<angle brackets>` are required, arguments in `[square brackets]` a
 - `!play [size_x] [size_y]`: Start a game. You control with reactions on the bot's message.
 - `!personnalbest [size_x] [size_y]`: Displays your personnal best for a given size, or every size if no argument is given.
 - `!highscore [size_x] [size_y]`: Displays the highest scores for a given size, or every size if no argument is given.
+ - `!highscores`: Alias to `!highscore`.
