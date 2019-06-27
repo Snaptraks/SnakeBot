@@ -120,9 +120,9 @@ class Game():
             color=0x77B255,
         ).set_footer(
             text='Coded for Discord Hack Week by Snaptraks#2606',
-        # ).set_author(
-        #     name='Snaptraks#2606',
-        #     url='https://github.com/Snaptraks',
+        ).set_author(
+            name=self.ctx.author.display_name,
+            icon_url=self.ctx.author.avatar_url_as(static_format='png'),
         ).add_field(
             name='Personnal Best',
             value=Score.get((self.size_x, self.size_y), self.ctx.author.id),
