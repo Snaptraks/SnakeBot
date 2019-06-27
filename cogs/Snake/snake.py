@@ -62,6 +62,9 @@ class Snake(commands.Cog):
             type='rich',
             url='https://github.com/Snaptraks/SnakeBot',
             color=0x77B255,
+        ).set_author(
+            name=ctx.author.display_name,
+            icon_url=ctx.author.avatar_url_as(static_format='png'),
         ).set_footer(
             text='Coded for Discord Hack Week by Snaptraks#2606',
         # ).add_field(
