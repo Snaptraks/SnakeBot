@@ -184,7 +184,7 @@ class Game():
                 elif reaction.emoji == Emoji.LEFT.value:
                     dx, dy = -1, 0
                 elif reaction.emoji == Emoji.X.value:
-                    await self.game_over('cancelled')
+                    await self.game_over('Cancelled game.')
                     continue
 
             self.move(dx, dy)
@@ -201,7 +201,7 @@ class Game():
             body = body[:-1].tolist()
             head_in_body = [part == [self.x, self.y] for part in body]
             if any(head_in_body):
-                await self.game_over('hit itself')
+                await self.game_over('Hit itself.')
                 continue
 
             # Detect collision with border
@@ -210,7 +210,7 @@ class Game():
                 self.y < 0 or
                 self.y >= self.size_y):
                 # game over
-                await self.game_over('hit a wall')
+                await self.game_over('Hit a wall.')
                 continue
 
             # Update message with new game layout
@@ -235,11 +235,16 @@ class Game():
 
     async def game_over(self, reason):
         self.is_over = True
+        self.embed.insert_field_at(
+            index=2,
+            name='Cause of Death',
+            value=reason,
+            inline=False,
+        )
+        await self.message_game.edit(embed=self.embed)
         # await self.message_game.delete()
         await self.message_game.clear_reactions()
-        print(reason)
         Score.save((self.size_x, self.size_y), self.ctx.author.id, self.score)
-
 
     def _spawn_apple(self):
         body = np.asarray(self.body).T
