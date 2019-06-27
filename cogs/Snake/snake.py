@@ -39,9 +39,13 @@ class Snake(commands.Cog):
         dict_best = {}
         if size_x is None and size_y is None:
             for size in Score.high_scores.keys():
-                score = Score.high_scores[size][ctx.author.id]
-                str_best.append(f'**{size[0]}x{size[1]}**: {score}')
-                dict_best[f'{size[0]}x{size[1]}'] = score
+                try:
+                    score = Score.high_scores[size][ctx.author.id]
+                    str_best.append(f'**{size[0]}x{size[1]}**: {score}')
+                    dict_best[f'{size[0]}x{size[1]}'] = score
+                except KeyError as e:
+                    # KeyError on user ID, not size.
+                    pass
         elif size_x is None or size_y is None:
             await ctx.send('Use either both `size_x` and `size_y`, or none.')
             return
