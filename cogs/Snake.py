@@ -287,6 +287,7 @@ class Snake(commands.Cog):
     async def play(self, ctx, size_x=5, size_y=5):
         """Starts a game of Snake!"""
         # MAX SIZE IN NORMAL MESSAGE: 198 emojis (18 x 11)
+        # MIN SIZE OF 5, BECAUSE OTHERWISE IT IS SMALL
         if size_x > 18:
             size_x = 18
         elif size_x < 5:
@@ -295,12 +296,9 @@ class Snake(commands.Cog):
             size_y = 11
         elif size_y < 5:
             size_y = 5
-        print('Starting Snake Game')
 
         game = Game(size_x, size_y, ctx, self.bot)
         await game.play()
-
-        print('Snake Game Over')
 
     @commands.command()
     async def personnalbest(self, ctx):
