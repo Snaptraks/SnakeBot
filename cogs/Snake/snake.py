@@ -44,7 +44,7 @@ class Snake(commands.Cog):
                     str_best.append(f'**{size[0]}x{size[1]}**: {score}')
                     dict_best[f'{size[0]}x{size[1]}'] = score
                 except KeyError as e:
-                    # KeyError on user ID, not size.
+                    # KeyError on user ID.
                     pass
         elif size_x is None or size_y is None:
             await ctx.send('Use either both `size_x` and `size_y`, or none.')
@@ -71,10 +71,6 @@ class Snake(commands.Cog):
             icon_url=ctx.author.avatar_url_as(static_format='png'),
         ).set_footer(
             text='Coded for Discord Hack Week by Snaptraks#2606',
-        # ).add_field(
-        #     name='Personnal Best',
-        #     value='\n'.join(str_best),
-        #     inline=False,
         )
         if len(dict_best) != 0:
             for s in dict_best:
@@ -121,10 +117,6 @@ class Snake(commands.Cog):
             color=0x77B255,
         ).set_footer(
             text='Coded for Discord Hack Week by Snaptraks#2606',
-        # ).add_field(
-        #     name='Highest Scores',
-        #     value='\n'.join(str_high),
-        #     inline=False,
         )
         if len(dict_top) != 0:
             for s in dict_top:
@@ -139,8 +131,3 @@ class Snake(commands.Cog):
             )
 
         await ctx.send(embed=e)
-
-    @commands.command()
-    async def emoji(self, ctx):
-        """Prints all the emojis (for debugging)."""
-        await ctx.send(' '.join(emoji.value for emoji in Emoji))

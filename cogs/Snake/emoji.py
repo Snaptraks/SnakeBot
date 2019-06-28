@@ -11,13 +11,3 @@ class Emoji(Enum):
     SNAKE = '\U0001F40D'  # :snake:
     UP = '\U00002B06'  # :arrow_up:
     X = '\U0000274C'  # :x:
-
-    # FOR DEBUG
-    # APPLE = 'A'  # :apple:
-    # BLACK = 'B'  # :black_large_square:
-    # DOWN = '\U00002B07'  # :arrow_down:
-    # LEFT = '\U00002B05'  # :arrow_left:
-    # RIGHT = '\U000027A1'  # :arrow_right:
-    # SNAKE = 'S'  # :snake:
-    # UP = '\U00002B06'  # :arrow_up:
-    # X = '\U0000274C'  # :x:

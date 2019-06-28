@@ -12,7 +12,8 @@ class Game():
         self.size_x, self.size_y = size_x, size_y
         self.ctx, self.bot = ctx, bot
 
-        self.x, self.y = self.size_x//2, self.size_y//2  # starting position
+        # starting position
+        self.x, self.y = self.size_x//2, self.size_y//2
         # a list of x-coords and y-coords
         self.body = [[self.x], [self.y]]
         self.score = 0
@@ -39,13 +40,6 @@ class Game():
             name='High Score',
             value=Score.get_top((self.size_x, self.size_y)),
         ).add_field(
-            # name=(
-            #     ':regional_indicator_s: '
-            #     ':regional_indicator_n: '
-            #     ':regional_indicator_a: '
-            #     ':regional_indicator_k: '
-            #     ':regional_indicator_e: '
-            # ),
             name=f'Score: {self.score}',
             value=self.display(),
             inline=False,
@@ -60,8 +54,6 @@ class Game():
         )
 
     async def play(self):
-        # message_game = await self.ctx.send(self.display())  # starting screen
-        # message_game = await self.ctx.send(embed=self.display())  # starting screen
         message_game = await self.ctx.send(embed=self.embed)  # starting screen
         self.message_game = message_game
         for arrow in self.controls:
@@ -100,7 +92,6 @@ class Game():
 
             # Detect collision with apple
             if (self.x, self.y) == self.apple:
-                # print('moved over apple')
                 self.eat()
 
             # Spawn new apple if no win detected
@@ -130,8 +121,6 @@ class Game():
                 continue
 
             # Update message with new game layout
-            # await message_game.edit(content=self.display())
-            # await message_game.edit(embed=self.display())
             await self.update_display()
 
     def move(self, dx, dy):
@@ -158,7 +147,6 @@ class Game():
             inline=False,
         )
         await self.message_game.edit(embed=self.embed)
-        # await self.message_game.delete()
         await self.message_game.clear_reactions()
         Score.save((self.size_x, self.size_y), self.ctx.author.id, self.score)
 
