@@ -178,6 +178,8 @@ class Game():
             self.screen[self.apple] = Emoji.APPLE.value
         # set Snake body
         self.screen[tuple(self.body)] = Emoji.SNAKE.value
+        # set Snake face
+        self.screen[(self.x, self.y)] = Emoji.DRAGON.value
         # Transpose (.T) the screen array to match horizontal-x vertical-y in
         # (x, y) order, unlike (i, j) for matrices
         str_screen = '\n'.join(''.join(line) for line in self.screen.T)
