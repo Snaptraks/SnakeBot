@@ -136,7 +136,7 @@ class Game():
 
     def eat(self):
         self.score += 1
-        self._apple_eaten = True
+        self.apple_eaten = True
 
     async def game_over(self, reason):
         self.is_over = True
