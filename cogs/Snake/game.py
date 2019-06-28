@@ -18,7 +18,7 @@ class Game():
         self.score = 0
         self.is_over = False
         self.apple = ()
-        self._apple_eaten = True
+        self.apple_eaten = True
 
         self.screen = np.full((size_x, size_y), Emoji.BLACK.value)
 
@@ -102,8 +102,15 @@ class Game():
             if (self.x, self.y) == self.apple:
                 # print('moved over apple')
                 self.eat()
-            if self._apple_eaten:
-                self._spawn_apple()
+
+            # Spawn new apple if no win detected
+            if self.score == self.size_x * self.size_y:
+                # completed the game
+                await self.update_display()
+                await self.game_over('You Won!')
+                continue
+            elif self.apple_eaten:
+                self.spawn_apple()
 
             # Detect collision with itself
             body = np.asarray(self.body).T
@@ -155,7 +162,7 @@ class Game():
         await self.message_game.clear_reactions()
         Score.save((self.size_x, self.size_y), self.ctx.author.id, self.score)
 
-    def _spawn_apple(self):
+    def spawn_apple(self):
         body = np.asarray(self.body).T
         while True:
             apple = (
@@ -165,11 +172,8 @@ class Game():
             apple_in_body = [part == list(apple) for part in body.tolist()]
             if not any(apple_in_body):
                 self.apple = apple
-                self._apple_eaten = False
+                self.apple_eaten = False
                 return
-
-    def _reset_screen(self):
-        self.screen = np.full((self.size_x, self.size_y), Emoji.BLACK.value)
 
     def display(self):
         self._reset_screen()
@@ -193,3 +197,6 @@ class Game():
             inline=False,
         )
         await self.message_game.edit(embed=self.embed)
+
+    def _reset_screen(self):
+        self.screen = np.full((self.size_x, self.size_y), Emoji.BLACK.value)
